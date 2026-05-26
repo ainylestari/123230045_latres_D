@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'home_page.dart';
 import 'profile_page.dart';
+import 'history_page.dart';
 
 class MainNavigation extends StatefulWidget {
   final String username;
@@ -19,7 +20,9 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     final pages = [
       HomePage(username: widget.username),
+      OrderHistoryPage(username: widget.username),
       ProfilePage(username: widget.username),
+
     ];
     return Scaffold(
       body: pages[currentIndex],
@@ -34,6 +37,10 @@ class _MainNavigationState extends State<MainNavigation> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt_long),
+            label: 'Order History',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

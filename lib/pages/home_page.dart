@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'cart_page.dart';
 import 'detail_page.dart';
+import 'history_page.dart';
 
 class HomePage extends StatefulWidget {
   final String username;
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: isLoading
+      /*body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: products.length,
@@ -126,7 +127,124 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               },
+            ),*/
+      body: isLoading
+    ? const Center(
+        child: CircularProgressIndicator(),
+      )
+    : GridView.builder(
+        padding: const EdgeInsets.all(16),
+
+        itemCount: products.length,
+
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.68,
+        ),
+
+        itemBuilder: (context, index) {
+
+          final item = products[index];
+
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DetailPage(
+                    product: item,
+                    username: widget.username,
+                  ),
+                ),
+              );
+            },
+
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 8,
+                    color: Colors.black12,
+                    offset: Offset(0, 3),
+                  )
+                ],
+              ),
+
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+
+                children: [
+
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius:
+                          const BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+
+                      child: Image.network(
+                        item['thumbnail'],
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+
+                    child: Column(
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+
+                      children: [
+
+                        Text(
+                          item['title'],
+                          maxLines: 1,
+                          overflow:
+                              TextOverflow.ellipsis,
+
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+
+                        const SizedBox(height: 6),
+
+                        Text(
+                          item['category'],
+                          style: const TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        Text(
+                          '\$${item['price']}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
+          );
+        },
+      ),
     );
   }
 }
